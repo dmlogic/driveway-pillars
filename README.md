@@ -2,7 +2,7 @@
 
 Sync lighting control to sunset / sunrise
 
-Turns on relay to power lights after sunset until shutoff and from startup until sunrise.
+Turns on relay to power lights x minutes after sunset until shutoff and from startup until x minutes before sunrise.
 
 Requires:
 
