@@ -4,7 +4,7 @@ import ephem
 import time
 import datetime
 import sys
-        # import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import config
 
 rightAboutNow = datetime.datetime
@@ -12,8 +12,8 @@ boundsTime = rightAboutNow.now().strftime("%H:%M")
 timeNow = rightAboutNow.utcnow().strftime("%H:%M")
 # timeNow = "05:01"
 # boundsTime = timeNow
-        # GPIO.setmode(GPIO.BCM)
-        # GPIO.setup(config.controlPin,GPIO.OUT)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(config.controlPin,GPIO.OUT)
 
 def turnOn():
     print("Turn on")
