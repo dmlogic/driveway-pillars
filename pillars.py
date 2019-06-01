@@ -15,23 +15,26 @@ timeNow = rightAboutNow.utcnow().strftime("%H:%M")
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(config.controlPin,GPIO.OUT)
 
+def debug(msg):
+    if(not config.debug):
+        return
+    print(msg)
+
 def turnOn():
-    print("Turn on")
-    if 'GPIO' in locals():
-        GPIO.output(controlPin,0)
+    debug("Turn on")
+    GPIO.output(config.controlPin,0)
     quit();
 
 def turnOff():
-    print("Turn off")
-    if 'GPIO' in locals():
-        GPIO.output(controlPin,1)
+    debug("Turn off")
+    GPIO.output(config.controlPin,1)
     quit();
 
-print("It is now ", boundsTime)
+debug("It is now "+ boundsTime)
 
 # If we're out of bounds, turn off and quit
 if boundsTime > config.turnOffLate or boundsTime < config.turnOnEarly:
-    print("out of bounds")
+    debug("out of bounds")
     turnOff();
 
 # Make an observer
@@ -53,9 +56,9 @@ eveningTime = sunset + datetime.timedelta(seconds=config.minutesOffet)
 morningTurnOff = morningTime.strftime("%H:%M")
 eveningTurnOn = eveningTime.strftime("%H:%M")
 
-print("UTC time is ",timeNow)
-print("Sunrise today is at ",morningTurnOff)
-print("Sunset today is at ",eveningTurnOn)
+debug("UTC time is "+timeNow)
+debug("Sunrise today is at "+morningTurnOff)
+debug("Sunset today is at "+eveningTurnOn)
 
 # Turn on conditions:
 #   sunrise is later than turn on time AND it is earlier than sunrise time
@@ -73,4 +76,4 @@ if (morningTurnOff > config.turnOnEarly and timeNow > config.turnOnEarly and tim
 if (morningTurnOff < timeNow or eveningTurnOn > timeNow) or (timeNow > turnOffLate):
     turnOff();
 
-print("No match :(")
+debug("No match :(")
