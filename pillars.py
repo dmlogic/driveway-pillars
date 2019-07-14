@@ -10,8 +10,9 @@ import config
 rightAboutNow = datetime.datetime
 boundsTime = rightAboutNow.now().strftime("%H:%M")
 timeNow = rightAboutNow.utcnow().strftime("%H:%M")
-# timeNow = "05:01"
-# boundsTime = timeNow
+#timeNow = "22:01"
+#boundsTime = timeNow
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(config.controlPin,GPIO.OUT)
 
@@ -60,13 +61,22 @@ debug("UTC time is "+timeNow)
 debug("Sunrise today is at "+morningTurnOff)
 debug("Sunset today is at "+eveningTurnOn)
 
+if(len(sys.argv) > 1):
+    request = str(sys.argv[1])
+    debug("requested "+request)
+    if(request == 'on'):
+        turnOn()
+    if(request == 'off'):
+        turnOff()
+    quit()
+
 # Turn on conditions:
 #   sunrise is later than turn on time AND it is earlier than sunrise time
 #   OR
 #   sunset is  earlier than turn off time AND it is later than sunset time
 
 if (morningTurnOff > config.turnOnEarly and timeNow > config.turnOnEarly and timeNow < morningTurnOff) or (eveningTurnOn < config.turnOffLate and timeNow >= eveningTurnOn and timeNow < config.turnOffLate):
-    turnOn();
+    turnOn()
 
 # Turn off conditions
 #   sunrise is earlier than now or sunset is earlier than now
@@ -74,6 +84,6 @@ if (morningTurnOff > config.turnOnEarly and timeNow > config.turnOnEarly and tim
 #   it is later than turnoff
 
 if (morningTurnOff < timeNow or eveningTurnOn > timeNow) or (timeNow > turnOffLate):
-    turnOff();
+    turnOff()
 
 debug("No match :(")
